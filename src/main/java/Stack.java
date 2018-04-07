@@ -29,7 +29,7 @@ public class Stack<X> implements Cloneable {
     this.size      = model.size;
     this.stack     = new Object[maxHeight];
 
-    for (int i = 0; i < model.getLength(); i++)
+    for (int i = 0; i < model.getSize(); i++)
       this.stack[i] = model.getItem(i);
 
   }
@@ -179,9 +179,10 @@ public class Stack<X> implements Cloneable {
     int ret = 494;
 
     // for each attribute (size, maxHeight, end)
-    ret =  ret * 31 + new Integer(this.size     ).hashCode();
-    ret =  ret * 31 + new Integer(this.maxHeight).hashCode();
-    ret =  ret * 31 + new Integer(this.end      ).hashCode();
+    ret =  ret * 31 + Integer.valueOf(this.size     ).hashCode();
+    ret =  ret * 31 + Integer.valueOf(this.maxHeight).hashCode();
+    ret =  ret * 31 + Integer.valueOf(this.end      ).hashCode();
+
 
     // loop over all elements in the stack
     for (int i = 0; i < this.end; i++)
