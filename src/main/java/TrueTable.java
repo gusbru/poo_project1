@@ -24,7 +24,8 @@ public class TrueTable {
     }
   }
 
-  public void test(String op1, String op2, String operations) {
+  public static void test(String operations) {
+    String op1, op2;
     // table true table
     for (int i = 0; i < operations.length(); i++) {
       for (int j = 0; j < operations.length(); j++) {
