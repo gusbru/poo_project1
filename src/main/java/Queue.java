@@ -1,5 +1,5 @@
 
-public class Queue<X> implements Cloneable 
+public class Queue<T> implements Cloneable 
 {
   private Object[] queue;
   private int size, maxLength, begin, end;
@@ -18,7 +18,7 @@ public class Queue<X> implements Cloneable
   }
 
   // copy-constructor
-  public Queue(Queue<X> model) throws Exception 
+  public Queue(Queue<T> model) throws Exception 
   {
 	  if (model == null)
 		  throw new Exception("null object");
@@ -32,7 +32,7 @@ public class Queue<X> implements Cloneable
 		  
   }
 
-  public void addItem(X item) throws Exception {
+  public void addItem(T item) throws Exception {
     if (item == null)
       throw new Exception("Must provide one element");
     
@@ -44,11 +44,11 @@ public class Queue<X> implements Cloneable
     this.queue[this.end] = item;
   }
 
-  public X getItem() throws Exception {
+  public T getItem() throws Exception {
     if (this.size == 0)
       throw new Exception("Queue is empty");
 
-    return (X)this.queue[this.begin];
+    return (T)this.queue[this.begin];
   }
 
   public void removeItem() throws Exception {
@@ -101,7 +101,7 @@ public class Queue<X> implements Cloneable
       return false;
 
     
-    Queue q = (Queue<X>)obj;
+    Queue<T> q = (Queue<T>)obj;
 
     if (this.size != q.size)
       return false;

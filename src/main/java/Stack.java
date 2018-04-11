@@ -1,6 +1,6 @@
 import java.lang.reflect.Method;
 
-public class Stack<X> implements Cloneable {
+public class Stack<T> implements Cloneable {
   private Object[] stack;
   private int size, maxHeight, end;
 
@@ -18,7 +18,7 @@ public class Stack<X> implements Cloneable {
   }
 
   // copy constructor
-  public Stack(Stack<X> model) throws Exception 
+  public Stack(Stack<T> model) throws Exception 
   {
     if (model == null) 
       throw new Exception("null object");
@@ -42,7 +42,7 @@ public class Stack<X> implements Cloneable {
   * 
   * @param  item  an object to be added to the stack
   */
-  public void addItem(X item) throws Exception 
+  public void addItem(T item) throws Exception 
   {
     if (item == null)
       throw new Exception("Item cannot be null");
@@ -70,19 +70,19 @@ public class Stack<X> implements Cloneable {
   * 
   * @param  item  an object to be added to the stack
   */
-  public X getItem() throws Exception 
+  public T getItem() throws Exception 
   {
     if (this.size == 0)
       throw new Exception("Stack is empty");
     
     if (this.stack[this.end] instanceof Cloneable)
-      return myClone((X)this.stack[this.end]);
+      return myClone((T)this.stack[this.end]);
     else
-      return (X)this.stack[this.end];
+      return (T)this.stack[this.end];
 
   }
 
-  public X getItem(int index) throws Exception 
+  public T getItem(int index) throws Exception 
   {
     if (this.size == 0)
       throw new Exception("Stack is empty");
@@ -91,9 +91,9 @@ public class Stack<X> implements Cloneable {
       throw new Exception("Index outside range");
 
     if (this.stack[index] instanceof Cloneable)
-      return myClone((X)this.stack[index]);
+      return myClone((T)this.stack[index]);
     else
-      return (X)this.stack[index];
+      return (T)this.stack[index];
   }
 
   public void removeItem() throws Exception {
@@ -145,7 +145,7 @@ public class Stack<X> implements Cloneable {
       return false;
     
     
-    Stack s = (Stack<X>)obj;
+    Stack<T> s = (Stack<T>)obj;
 
     if (this.size != s.size)
       return false;
@@ -193,11 +193,11 @@ public class Stack<X> implements Cloneable {
 
   public Object clone()
   {
-    Stack<X> ret = null;
+    Stack<T> ret = null;
 
     try
     {
-      ret = new Stack(this);
+      ret = new Stack<T>(this);
     }
     catch (Exception error)
     {}
@@ -213,9 +213,9 @@ public class Stack<X> implements Cloneable {
   * @param  model   is an object of a generic class X
   * @return         an object identical to the one given as parameter
   */
-  private X myClone(X model)
+  private T myClone(T model)
   {
-    X ret = null;
+    T ret = null;
     try
     {
       Class<?> xClass = model.getClass();
@@ -223,7 +223,7 @@ public class Stack<X> implements Cloneable {
       Method method = xClass.getMethod("clone", parameterTypes);
       Object[] realParameter = null;
 
-      ret = (X)method.invoke(model, realParameter);      
+      ret = (T)method.invoke(model, realParameter);      
     }
     catch(Exception error)
     {}
