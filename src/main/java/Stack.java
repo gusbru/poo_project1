@@ -73,7 +73,7 @@ public class Stack<T> implements Cloneable {
   public T getItem() throws Exception 
   {
     if (this.size == 0)
-      throw new Exception("Stack is empty");
+      throw new Exception("Stack is empty. Cannot retrieve any item");
     
     if (this.stack[this.end] instanceof Cloneable)
       return myClone((T)this.stack[this.end]);
@@ -85,7 +85,7 @@ public class Stack<T> implements Cloneable {
   public T getItem(int index) throws Exception 
   {
     if (this.size == 0)
-      throw new Exception("Stack is empty");
+      throw new Exception("Stack is empty. Cannot retrieve any item");
     
     if (index < 0 || index > this.size)
       throw new Exception("Index outside range");

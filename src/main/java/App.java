@@ -25,27 +25,72 @@ public class App {
     // put elements into the stack or queue
     String token;
     Float number;
-    while (expression.hasMoreTokens()) {
-        token = expression.nextToken().toString();
-        if (token.equals("(")) {
-            System.out.println("Go to stack  " + token);
-        } else {
-            try {
-                number = Float.valueOf(token);
-                System.out.println("Number    =  " + number);
-            } catch (Exception e) {
-                if (operations.contains(token)) {
-                    System.out.println("Operation =  " + token);
-                } else {
-                    // TODO: throw new Exception here!
-                    System.out.println("Operation not allowed");
-                }
-            }
-        }
+    Stack<String> stack = new Stack<String>(expressionString.length());
+    Queue<String> queue = new Queue<String>(expressionString.length());
 
+    while (expression.hasMoreTokens()) {
+      System.out.println("-----------------------------------");
+      System.out.println("Stack     = " + stack.toString());
+      System.out.println("Queue     = " + queue.toString());
+
+      token = expression.nextToken().toString();
+
+      try {
+        number = Float.valueOf(token);
+        queue.addItem(token);
+        System.out.println("Number    =  " + number);
+      } catch (Exception e) {
+        if (token.equals("(")) {
+          stack.addItem(token);
+          System.out.println("Operation =  " + token);
+        } else if (token.equals(")")) {
+          System.out.println(") found!!!!");
+          
+          while(!("(".equals(stack.getItem()))) {
+            System.out.println("Removing " + stack.getItem() + " from stack");
+            System.out.println("(" + "(".equals(stack.getItem()));
+            queue.addItem(stack.getItem());
+            stack.removeItem();
+          }
+          System.out.println("Removing " + stack.getItem() + " from stack");
+          stack.removeItem();
+        } else {
+          if ("+-*/^".contains(token)) {
+            System.out.println("Operation =  " + token);
+
+            if (stack.isEmpty()) {
+              stack.addItem(token);
+            } else {
+              System.out.println("The value " + stack.getItem() + " and " + token + " is " + TrueTable.table(stack.getItem(), token));
+              
+              while (TrueTable.table(stack.getItem(), token)) {
+                queue.addItem(stack.getItem());
+                System.out.println("Adding " + stack.getItem() + " to queue and removing from stack");
+                System.out.println("Stack ====>" + stack.toString());
+                stack.removeItem();
+                if(stack.isEmpty()) break;
+              }
+              stack.addItem(token);
+
+
+            }
+          } else {
+            // TODO: throw new Exception here!
+            System.out.println("Operation " + token + " not allowed");
+          }
+        }
+      }
+
+      System.out.println("-----------------------------------");
     }
 
-    
+    // empty the stack
+    while(!stack.isEmpty()) {
+      queue.addItem(stack.getItem());
+      stack.removeItem();
+    }
+    System.out.println("Stack     = " + stack.toString());
+    System.out.println("Queue     = " + queue.toString());
 
   }
 }

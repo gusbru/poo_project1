@@ -1,4 +1,5 @@
 public class RemoveBlancks {
+  
   // remove blanck spaces
   public static String removeBlanck(String inputExpression) {
     StringBuilder expressionString = new StringBuilder();
