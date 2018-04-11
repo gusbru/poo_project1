@@ -12,7 +12,7 @@ public class App {
     String operations = "(^*/+-)";
 
     // TODO : the expression needs to be read from the user input
-    String inputExpressionString = "10   + (  2      * 3  -     4 ) ^  2  / 4 +   6   * 2";
+    String inputExpressionString = "10   +   2   (   * 3  -     4 ) ^  2  / 4 +   6   * 2";
 
     // remove blanck
     String expressionString = RemoveBlancks.removeBlanck(inputExpressionString);
@@ -29,6 +29,7 @@ public class App {
     Queue<String> queue = new Queue<String>(expressionString.length());
 
     while (expression.hasMoreTokens()) {
+      // TODO: check if the token is ( or ) before add to queue. If yes, STOP, something is wrong
       System.out.println("-----------------------------------");
       System.out.println("Stack     = " + stack.toString());
       System.out.println("Queue     = " + queue.toString());
