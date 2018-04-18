@@ -3,27 +3,20 @@ import java.util.StringTokenizer;
 class ExpressionSolver {
   final String operations = "(^*/+-)"; // Allowed operations
   private String expressionString;
-  private String token;
-  private Float number;
   private Stack<String> stack;
   private Queue<String> queue;
-  
-  // calculadora de expressao
-  private double v1, v2;
-  private Character op;
 
-
+  // Constructor
   public ExpressionSolver(String inputExpressionString) throws Exception {
     if (inputExpressionString.isEmpty())
       throw new Exception("Expression to solve must be not null");
 
-    expressionString = removeBlanck(inputExpressionString);
-
     try {
+      expressionString = removeBlanck(inputExpressionString);
       stack = new Stack<String>(expressionString.length());
       queue = new Queue<String>(expressionString.length());
     } catch (Exception error) {
-      System.out.println("Error " +  error);
+      System.out.println("Error " + error);
       System.exit(10);
     }
   }
@@ -38,54 +31,34 @@ class ExpressionSolver {
       System.out.println("Stack     = " + stack.toString());
       System.out.println("Queue     = " + queue.toString());
 
-      token = expression.nextToken().toString();
+      String token = expression.nextToken().toString();
 
       try {
-        number = Float.valueOf(token);
-        // queue.addItem(token);
-        try {
-          addToken(token, queue);
-        } catch (Exception error) {
-          System.out.println("Error " + error);
-          System.exit(0);
-        }
+        Double number = Double.valueOf(token);
+        addToken(token, queue);
         System.out.println("Number    =  " + number);
       } catch (Exception e) {
-
         // check if the token is a valid operation
         if (!operations.contains(token)) {
           System.out.println("Malformed expression " + e);
           System.exit(0);
         }
 
-        switch (token) {
-        case "(":
-          try {
+        try {
+          switch (token) {
+          case "(":
             stack.addItem(token);
-          } catch (Exception error) {
-            System.out.println("Error " + error);
-            System.exit(0);
-          }
-          System.out.println("Operation =  " + token);
-          break;
-
-        case ")":
-          try {
+            System.out.println("Operation =  " + token);
+            break;
+          case ")":
             operationClose(token, stack, queue);
-          } catch (Exception error) {
-            System.out.println("Error " + error);
-            System.exit(0);
-          }
-          break;
-
-        default:
-          try {
+            break;
+          default:
             operationDefault(token, stack, queue);
-          } catch (Exception error) {
-            System.out.println("Error " + error);
-            System.exit(0);
           }
-
+        } catch (Exception error) {
+          System.out.println("Error " + error);
+          System.exit(0);
         }
       }
 
@@ -93,40 +66,38 @@ class ExpressionSolver {
     }
 
     // empty the stack
-    while (!stack.isEmpty()) {
-      // queue.addItem(stack.getItem());
-      try {
+    try {
+      while (!stack.isEmpty()) {
         addToken(stack.getItem(), queue);
         stack.removeItem();
-      } catch (Exception error) {
-        System.out.println("Error " + error);
-        System.exit(0);
       }
+    } catch (Exception error) {
+      System.out.println("Error " + error);
+      System.exit(0);
     }
+
     System.out.println("Stack     = " + stack.toString());
     System.out.println("Queue     = " + queue.toString());
 
     // Calculadora de expressao
-    
-
-    System.out.println("Starting the calculator");
+    System.out.println("Starting the Expression Calculator");
 
     while (!queue.isEmpty()) {
       while (true) {
         try {
-          number = Float.valueOf(queue.getItem());
+          Double.valueOf(queue.getItem());
           stack.addItem(queue.getItem());
           System.out.println("Value removed " + queue.getItem());
           queue.removeItem();
         } catch (Exception e) {
-            try {
-            op = queue.getItem().toCharArray()[0];
+          try {
+            Character op = queue.getItem().toCharArray()[0];
             queue.removeItem();
 
-            v2 = Double.valueOf(stack.getItem());
+            Double v2 = Double.valueOf(stack.getItem());
             stack.removeItem();
 
-            v1 = Double.valueOf(stack.getItem());
+            Double v1 = Double.valueOf(stack.getItem());
             stack.removeItem();
 
             stack.addItem(calc(v1, v2, op).toString());
@@ -139,7 +110,6 @@ class ExpressionSolver {
           }
         }
       }
-
     }
 
     System.out.println("Calculation Finished!");
@@ -223,8 +193,9 @@ class ExpressionSolver {
     }
   }
 
-  private String removeBlanck(String inputExpression) {
+  private String removeBlanck(String inputExpression) throws Exception {
     StringBuilder expressionString = new StringBuilder();
+    //TODO: check if after a number there is a character which belongs to operations
     for (int i = 0; i < inputExpression.length(); i++) {
       if (!(inputExpression.charAt(i) == ' '))
         expressionString.append(inputExpression.charAt(i));
@@ -235,7 +206,5 @@ class ExpressionSolver {
   public void printExpression() {
     System.out.println("Expression to evaluate: " + expressionString);
   }
-
-
 
 }
