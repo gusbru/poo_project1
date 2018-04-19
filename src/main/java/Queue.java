@@ -1,3 +1,4 @@
+import java.lang.reflect.Method;
 
 public class Queue<T> implements Cloneable
 {
@@ -27,8 +28,10 @@ public class Queue<T> implements Cloneable
         this.size = model.getSize();
         this.begin = model.getBegin();
         this.end = model.getEnd();
+        this.queue = new Object[model.queue.length];
 
-
+        for (int i = 0; i < model.queue.length; i++)
+            this.queue[i] = model.queue[i];
     }
 
     public void addItem(T item) throws Exception
@@ -132,18 +135,86 @@ public class Queue<T> implements Cloneable
 
     }
 
+    public int hashCode()
+    {
+        int ret = 304;
+
+        // for each attribute
+        ret = 3*ret + Integer.valueOf(this.begin).hashCode();
+        ret = 3*ret + Integer.valueOf(this.end).hashCode();
+        ret = 3*ret + Integer.valueOf(this.maxLength).hashCode();
+        ret = 3*ret + Integer.valueOf(this.size).hashCode();
+
+        int atual = this.begin;
+        int qtd   = this.size;
+
+        while (qtd > 0)
+        {
+            ret = 3*ret + this.queue[atual].hashCode();
+            qtd--;
+            atual++;
+            if (atual == this.queue.length)
+                atual = 0;
+        }
+
+        return ret;
+    }
+
     public String toString()
     {
-        String str = "";
+        StringBuilder str = new StringBuilder();
         int position;
 
         for (int i = 0; i < this.size; i++)
         {
             position = (this.begin + i) % this.maxLength;
-            str += this.queue[position] + " ";
+            str.append(this.queue[position]).append(" ");
         }
 
-        return str;
+        return str.toString();
+    }
+
+//    public Object clone()
+//    {
+//        Queue<T> ret = null;
+//
+//        try
+//        {
+//            ret = new Queue<T>(this);
+//        } catch (Exception error){
+//            System.err.println("Error " + error);
+//        }
+//
+//        return ret;
+//    }
+    public Queue<T> clone() throws CloneNotSupportedException
+    {
+        Queue<T> cloneQueue = (Queue<T>) super.clone();
+        cloneQueue.queue = this.queue.clone();
+        return cloneQueue;
+    }
+
+    /**
+     * Helper method to clone an object of a generic class X
+     * <p>
+     *
+     * @param model is an object of a generic class X
+     * @return an object identical to the one given as parameter
+     */
+    private T myClone(T model)
+    {
+        T ret = null;
+        try
+        {
+            Class<?> xClass = model.getClass();
+            Class<?>[] parameterTypes = null;
+            Method method = xClass.getMethod("clone", parameterTypes);
+            Object[] realParameter = null;
+            ret = (T) method.invoke(model, realParameter);
+        } catch (Exception error)
+        {}
+
+        return ret;
     }
 
 
