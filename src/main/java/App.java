@@ -6,7 +6,6 @@ public class App
 
     public static void main(String[] args) throws Exception
     {
-
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Type an expression: (ENTER to default expression)");
         String inputExpressionString = in.readLine();
