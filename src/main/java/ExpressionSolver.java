@@ -57,28 +57,20 @@ public class ExpressionSolver
 
     public void solver()
     {
-
         // Tokenizer
-        // Allowed operations
-        String operations = "(^*/+-)";
+        String operations = "(^*/+-)"; // Allowed operations
         StringTokenizer expression = new StringTokenizer(expressionString, operations, true);
 
         while (expression.hasMoreTokens())
         {
-            // System.out.println("-----------------------------------");
-            // System.out.println("Stack     = " + stack.toString());
-            // System.out.println("Queue     = " + queue.toString());
-
             String token = expression.nextToken();
 
             try
             {
                 Double.valueOf(token);
                 addToken(token, queue);
-                // System.out.println("Number    =  " + number);
             } catch (Exception error)
             {
-                // check if the token is a valid operation
                 if (!operations.contains(token))
                 {
                     System.err.println("Malformed expression " + error);
@@ -86,8 +78,6 @@ public class ExpressionSolver
                 }
                 doOperation(token);
             }
-
-            // System.out.println("-----------------------------------");
         }
 
         // empty the stack
@@ -104,12 +94,7 @@ public class ExpressionSolver
             System.exit(10);
         }
 
-        // System.out.println("Stack     = " + stack.toString());
-        // System.out.println("Queue     = " + queue.toString());
-
         // Calculadora de expressao
-        // System.out.println("Starting the Expression Calculator");
-
         try
         {
             while (!queue.isEmpty())
@@ -134,8 +119,6 @@ public class ExpressionSolver
                         stack.removeItem();
 
                         stack.addItem(calc(v1, v2, op).toString());
-                        // System.out.println("Operation: " + v1 + " " + op + " " + v2 + " = " + calc(v1, v2, op));
-                        // System.out.println("Stack = " + stack.toString());
                         break;
                     }
                 }
@@ -146,11 +129,6 @@ public class ExpressionSolver
             System.exit(10);
         }
 
-        // System.out.println("Calculation Finished!");
-        // System.out.println("Expression = " + stack.toString());
-        // System.out.println("Stack     = " + stack.toString());
-        // System.out.println("Queue     = " + queue.toString());
-        // check if the queue is empty and the stack contains only ONE value
         try
         {
             checkResult();
@@ -182,7 +160,6 @@ public class ExpressionSolver
             {
                 case "(":
                     stack.addItem(token);
-                    // System.out.println("Operation =  " + token);
                     break;
                 case ")":
                     operationClose(token);
@@ -216,15 +193,10 @@ public class ExpressionSolver
         if (!(")".contains(token)))
             throw new Exception("Invalid close symbol \")\" ");
 
-        // System.out.println(") found!!!!");
-
         try
         {
             while (!("(".equals(stack.getItem())))
             {
-                // System.out.println("Removing " + stack.getItem() + " from stack");
-                // System.out.println("(" + "(".equals(stack.getItem()));
-                // queue.addItem(stack.getItem());
                 addToken(stack.getItem(), queue);
                 stack.removeItem();
             }
@@ -234,7 +206,6 @@ public class ExpressionSolver
             System.exit(10);
         }
 
-        // System.out.println("Removing " + stack.getItem() + " from stack");
         stack.removeItem();
     }
 
@@ -242,24 +213,16 @@ public class ExpressionSolver
     {
         if ("+-*/^".contains(token))
         {
-            // System.out.println("Operation =  " + token);
-
             if (stack.isEmpty())
             {
                 stack.addItem(token);
             } else
             {
-                // System.out.println(
-                // "The value " + stack.getItem() + " and " + token + " is " + TrueTable.table(stack.getItem(), token));
-
                 try
                 {
                     while (TrueTable.table(stack.getItem(), token))
                     {
-                        // queue.addItem(stack.getItem());
                         addToken(stack.getItem(), queue);
-                        // System.out.println("Adding " + stack.getItem() + " to queue and removing from stack");
-                        // System.out.println("Stack ====>" + stack.toString());
                         stack.removeItem();
                         if (stack.isEmpty())
                             break;
