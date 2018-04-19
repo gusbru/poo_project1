@@ -1,7 +1,6 @@
 import java.util.StringTokenizer;
 
 class ExpressionSolver {
-  final String operations = "(^*/+-)"; // Allowed operations
   private String expressionString;
   private Stack<String> stack;
   private Queue<String> queue;
@@ -21,15 +20,6 @@ class ExpressionSolver {
     }
   }
 
-  // Copy constructor
-  // TODO: finish
-  public ExpressionSolver(ExpressionSolver model) throws Exception {
-    if (model == null)
-      throw new Exception("null object");
-    
-      this.expressionString = model.expressionString;
-  }
-
   public boolean equals(Object obj) {
     if (this == obj)
       return true;
@@ -42,10 +32,7 @@ class ExpressionSolver {
 
     // Cast
     ExpressionSolver e = (ExpressionSolver) obj;
-    if (this.expressionString != e.expressionString)
-      return false;
-
-    return true;
+    return this.expressionString.equals(e.expressionString);
   }
 
   public String toString() {
@@ -61,20 +48,11 @@ class ExpressionSolver {
     return ret;
   }
 
-  // TODO: finish
-  // public Object clone() {
-
-  // }
-
-  // TODO: compareTo()
-  
-
-
-
-
   public void solver() {
 
     // Tokenizer
+    // Allowed operations
+    String operations = "(^*/+-)";
     StringTokenizer expression = new StringTokenizer(expressionString, operations, true);
 
     while (expression.hasMoreTokens()) {
@@ -102,10 +80,10 @@ class ExpressionSolver {
             // System.out.println("Operation =  " + token);
             break;
           case ")":
-            operationClose(token, stack, queue);
+            operationClose(token);
             break;
           default:
-            operationDefault(token, stack, queue);
+            operationDefault(token);
           }
         } catch (Exception error) {
           System.out.println("Error " + error);
@@ -133,15 +111,15 @@ class ExpressionSolver {
     // Calculadora de expressao
     // System.out.println("Starting the Expression Calculator");
 
-    while (!queue.isEmpty()) {
-      while (true) {
-        try {
-          Double.valueOf(queue.getItem());
-          stack.addItem(queue.getItem());
-          // System.out.println("Value removed " + queue.getItem());
-          queue.removeItem();
-        } catch (Exception e) {
+    try {
+      while (!queue.isEmpty()) {
+        while (true) {
           try {
+            Double.valueOf(queue.getItem());
+            stack.addItem(queue.getItem());
+            // System.out.println("Value removed " + queue.getItem());
+            queue.removeItem();
+          } catch (Exception e) {
             Character op = queue.getItem().toCharArray()[0];
             queue.removeItem();
 
@@ -155,12 +133,11 @@ class ExpressionSolver {
             // System.out.println("Operation: " + v1 + " " + op + " " + v2 + " = " + calc(v1, v2, op));
             // System.out.println("Stack = " + stack.toString());
             break;
-          } catch (Exception error) {
-            System.out.println("Error" + error);
-            System.exit(0);
           }
         }
       }
+    } catch (Exception error) {
+      System.out.println("Error " + error);
     }
 
     // System.out.println("Calculation Finished!");
@@ -174,7 +151,7 @@ class ExpressionSolver {
       System.out.println("Error " + error);
       System.exit(0);
     }
-    
+
   }
 
   public void printResult() {
@@ -198,30 +175,30 @@ class ExpressionSolver {
     queue.addItem(token);
   }
 
-  private void operationClose(String token, Stack<String> stack, Queue<String> queue) throws Exception {
+  private void operationClose(String token) throws Exception {
     if (!(")".contains(token)))
       throw new Exception("Invalid close symbol \")\" ");
 
     // System.out.println(") found!!!!");
 
-    while (!("(".equals(stack.getItem()))) {
-      // System.out.println("Removing " + stack.getItem() + " from stack");
-      // System.out.println("(" + "(".equals(stack.getItem()));
-      // queue.addItem(stack.getItem());
-      try {
+    try {
+      while (!("(".equals(stack.getItem()))) {
+        // System.out.println("Removing " + stack.getItem() + " from stack");
+        // System.out.println("(" + "(".equals(stack.getItem()));
+        // queue.addItem(stack.getItem());
         addToken(stack.getItem(), queue);
-      } catch (Exception error) {
-        System.out.println("Error " + error);
-        System.exit(0);
+        stack.removeItem();
       }
-
-      stack.removeItem();
+    } catch (Exception error) {
+      System.out.println("Error " + error);
+      System.exit(0);
     }
+
     // System.out.println("Removing " + stack.getItem() + " from stack");
     stack.removeItem();
   }
 
-  private void operationDefault(String token, Stack<String> stack, Queue<String> queue) throws Exception {
+  private void operationDefault(String token) throws Exception {
     if ("+-*/^".contains(token)) {
       // System.out.println("Operation =  " + token);
 
@@ -229,21 +206,21 @@ class ExpressionSolver {
         stack.addItem(token);
       } else {
         // System.out.println(
-            // "The value " + stack.getItem() + " and " + token + " is " + TrueTable.table(stack.getItem(), token));
+        // "The value " + stack.getItem() + " and " + token + " is " + TrueTable.table(stack.getItem(), token));
 
-        while (TrueTable.table(stack.getItem(), token)) {
-          // queue.addItem(stack.getItem());
-          try {
+        try {
+          while (TrueTable.table(stack.getItem(), token)) {
+            // queue.addItem(stack.getItem());
             addToken(stack.getItem(), queue);
-          } catch (Exception error) {
-            System.out.println("Error " + error);
-            System.exit(0);
+            // System.out.println("Adding " + stack.getItem() + " to queue and removing from stack");
+            // System.out.println("Stack ====>" + stack.toString());
+            stack.removeItem();
+            if (stack.isEmpty())
+              break;
           }
-          // System.out.println("Adding " + stack.getItem() + " to queue and removing from stack");
-          // System.out.println("Stack ====>" + stack.toString());
-          stack.removeItem();
-          if (stack.isEmpty())
-            break;
+        } catch (Exception error) {
+          System.out.println("Error " + error);
+          System.exit(0);
         }
         stack.addItem(token);
 
@@ -276,10 +253,6 @@ class ExpressionSolver {
         expressionString.append(inputExpression.charAt(i));
     }
     return expressionString.toString();
-  }
-
-  public void printExpression() {
-    System.out.println("Expression to evaluate: " + expressionString);
   }
 
 }

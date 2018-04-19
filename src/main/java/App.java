@@ -9,7 +9,7 @@ public class App {
     String inputExpressionString = "10  +  (  2      * 3  -     4 ) ^  2  / 4 +   6   * 2	";
 
     ExpressionSolver expressionSolver = new ExpressionSolver(inputExpressionString);
-    expressionSolver.printExpression();
+    System.out.println("Expression to be solved: " + expressionSolver.toString());
     expressionSolver.solver();
     expressionSolver.printResult();
   }
