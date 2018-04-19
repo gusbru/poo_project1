@@ -7,11 +7,11 @@ public class App
     public static void main(String[] args) throws Exception
     {
 
-        // TODO : the expression needs to be read from the user input
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Type an expression:");
+        System.out.println("Type an expression: (ENTER to default expression)");
         String inputExpressionString = in.readLine();
-//        String inputExpressionString = "10  +  (  2      * 3  -     4 ) ^  2  / 4 +   6   * 2	";
+        if (inputExpressionString.length() == 0)
+            inputExpressionString = "10  +  (  2      * 3  -     4 ) ^  2  / 4 +   6   * 2	";
 
         ExpressionSolver expressionSolver = new ExpressionSolver(inputExpressionString);
         System.out.println("Expression to be solved: " + expressionSolver.toString());

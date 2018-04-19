@@ -1,6 +1,6 @@
 import java.util.StringTokenizer;
 
-class ExpressionSolver
+public class ExpressionSolver
 {
     private String expressionString;
     private Stack<String> stack;
