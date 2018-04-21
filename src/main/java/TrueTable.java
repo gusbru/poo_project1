@@ -12,13 +12,10 @@ public class TrueTable
             case "(":
                 return ")".contains(op2);
             case "^":
-                return "*/+-)".contains(op2);
             case "*":
-                return "*/+-)".contains(op2);
             case "/":
                 return "*/+-)".contains(op2);
             case "+":
-                return "+-)".contains(op2);
             case "-":
                 return "+-)".contains(op2);
             default:
